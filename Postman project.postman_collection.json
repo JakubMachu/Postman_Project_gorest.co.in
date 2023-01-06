@@ -15,6 +15,14 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 300ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Content-Type\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -57,6 +65,64 @@
 			"response": []
 		},
 		{
+			"name": "Get user by name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL1}}?name=Cale",
+					"host": [
+						"{{URL1}}"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Cale"
+						}
+					]
+				},
+				"description": "StartFragmentStartFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variable\n\nEndFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variableEndFragment"
+			},
+			"response": []
+		},
+		{
 			"name": "Create new user",
 			"event": [
 				{
@@ -66,7 +132,14 @@
 							"pm.test(\"Status code is 201\", function () {\r",
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
-							""
+							"\r",
+							"pm.test(\"Status code name has string\", () => {\r",
+							"  pm.response.to.have.status(\"Created\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Successful POST request\", () => {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,202]);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -189,9 +262,15 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Jon Doe\", function () {\r",
+							"pm.test(\"Name is: Jon Doe\", function () {\r",
 							"    const jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.name).to.eql(\"Jon Doe\");\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"Test data type of the response: name is string, id is number\", () => {\r",
+							"  pm.expect(jsonData.name).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData.id).to.be.a(\"number\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -247,7 +326,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"active\", function () {\r",
+							"pm.test(\"Status is active\", function () {\r",
 							"    const jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.status).to.eql(\"active\");\r",
 							"});\r",
@@ -365,7 +444,7 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Resource not found\", function () {\r",
+							"pm.test(\"User not found\", function () {\r",
 							"    const jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.message).to.eql(\"Resource not found\");\r",
 							"});"
@@ -787,6 +866,10 @@
 			"key": "status",
 			"value": "active",
 			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "i"
 		}
 	]
 }
