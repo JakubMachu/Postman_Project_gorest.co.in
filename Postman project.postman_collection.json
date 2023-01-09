@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Status code of users",
+			"name": "Status code, response time, heder",
 			"event": [
 				{
 					"listen": "test",
@@ -75,6 +75,70 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
+							"pm.test(\"Response should include expected name: Cale\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.equal(\"Cale\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Cale\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL1}}?name=Cale",
+					"host": [
+						"{{URL1}}"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Cale"
+						}
+					]
+				},
+				"description": "StartFragmentStartFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variable\n\nEndFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variableEndFragment"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
 							""
 						],
 						"type": "text/javascript"
@@ -107,14 +171,93 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL1}}?name=Cale",
+					"raw": "{{URL1}}?id=38004",
 					"host": [
 						"{{URL1}}"
 					],
 					"query": [
 						{
-							"key": "name",
-							"value": "Cale"
+							"key": "id",
+							"value": "38004"
+						}
+					]
+				},
+				"description": "StartFragmentStartFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variable\n\nEndFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variableEndFragment"
+			},
+			"response": []
+		},
+		{
+			"name": "User id verification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID is: 38004\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(280);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"Test data type of the response: name is string, id is number\", () => {\r",
+							"  pm.expect(jsonData.name).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData.id).to.be.a(\"number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL1}}/{{API_NUMBER}}?id=38004",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"{{API_NUMBER}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "38004"
 						}
 					]
 				},
@@ -196,9 +339,9 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Jon Doe\", function () {\r",
+							"pm.test(\"Jon\", function () {\r",
 							"    const jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.name).to.eql(\"Jon Doe\");\r",
+							"    pm.expect(jsonData.name).to.eql(\"Jon\");\r",
 							"});\r",
 							"\r",
 							""
@@ -231,7 +374,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Jon Doe\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Jon\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -262,9 +405,9 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Name is: Jon Doe\", function () {\r",
+							"pm.test(\"Name is: Jon\", function () {\r",
 							"    const jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.name).to.eql(\"Jon Doe\");\r",
+							"    pm.expect(jsonData.name).to.eql(\"Jon\");\r",
 							"});\r",
 							"\r",
 							"const jsonData = pm.response.json();\r",
@@ -388,7 +531,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 204\", function () {\r",
+							"pm.test(\"Status code is 204 - No Content\", function () {\r",
 							"    pm.response.to.have.status(204);\r",
 							"});\r",
 							"\r",
@@ -479,12 +622,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL1}}/{{API_NUMBER}}",
+					"raw": "{{URL1}}/{{API_NUMBER}}?name=Jon",
 					"host": [
 						"{{URL1}}"
 					],
 					"path": [
 						"{{API_NUMBER}}"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Jon"
+						}
 					]
 				},
 				"description": "StartFragmentStartFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variable\n\nEndFragment\n\nCreate POST request, test which will verify the response and save USER_ID from response to variableEndFragment"
